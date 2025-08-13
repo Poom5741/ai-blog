@@ -1,0 +1,29 @@
+/* Import normalize.css for CSS reset */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
+
+/* Base typography */
+body {
+  line-height: 1.5;
+}
+
+/* Responsive design breakpoints for readability */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+    padding: 0 1rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  body {
+    font-size: 18px;
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  body {
+    font-size: 20px;
+    padding: 0 3rem;
+  }
+}
