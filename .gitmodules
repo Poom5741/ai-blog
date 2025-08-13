@@ -1,4 +1,0 @@
-[submodule "ai-weekly-blog"]
-	path = ai-weekly-blog
-	url = https://github.com/Poom5741/ai-weekly-blog.git
-	branch = master
