@@ -1,16 +1,30 @@
-import React from 'react';
-import FuturisticButton from '../components/FuturisticButton';
+import { useState } from 'react';
 
-const HomePage: React.FC = () => {
+export default function Home() {
+  const [value, setValue] = useState('');
+  const [result, setResult] = useState<string | null>(null);
+
+  const handleClick = async () => {
+    if (!value.trim()) {
+      alert('Please enter a value');
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${encodeURIComponent(value)}`);
+      const data = await res.json();
+      setResult(data.title);
+    } catch (err) {
+      console.error('Failed to fetch todo', err);
+      setResult('Error fetching data');
+    }
+  };
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '40px' }}>
-      <h1>Welcome to the AI Blog</h1>
-      <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '24px' }}>
-        <FuturisticButton href="/about">Go to About</FuturisticButton>
-        <FuturisticButton href="/contact">Contact Us</FuturisticButton>
-      </div>
+    <div>
+      <input value={value} onChange={(e) => setValue(e.target.value)} />
+      <button onClick={handleClick}>Fetch Todo</button>
+      {result && <p>{result}</p>}
     </div>
   );
-};
-
-export default HomePage;
+}
