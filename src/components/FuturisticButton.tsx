@@ -1,60 +1,51 @@
 import React from 'react';
 
-interface FuturisticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /**
-   * Accessible label for screen readers.
-   */
-  ariaLabel: string;
-  /**
-   * Button type attribute to define its behavior in forms.
-   * Defaults to "button" to prevent unintended form submissions.
-   */
-  type?: 'button' | 'submit' | 'reset';
+import { useRouter } from 'next/router';
+
+const VALID_ROUTES = ['/', '/about', '/contact'];
+
+interface FuturisticButtonProps {
+  href: string;
+  children: React.ReactNode;
 }
 
-/**
- * A visually striking button with glowing borders and subtle animations.
- */
-const Button: React.FC<FuturisticButtonProps> = ({
-  ariaLabel,
-  children,
-  type = 'button',
-  ...props
-}) => (
-  <button
-    aria-label={ariaLabel}
-    type={type}
-    className="futuristic-button"
-    {...props}
-  >
-    {children}
-    <style jsx>{`
-      .futuristic-button {
-        position: relative;
-        padding: 0.75rem 1.5rem;
-        color: #ffffff;
-        background: transparent;
-        border: 2px solid #00ffff;
-        border-radius: 8px;
-        text-transform: uppercase;
-        font-weight: bold;
-        cursor: pointer;
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-      }
+const FuturisticButton: React.FC<FuturisticButtonProps> = ({ href, children }) => {
+  const router = useRouter();
 
-      .futuristic-button:hover,
-      .futuristic-button:focus {
-        box-shadow: 0 0 8px #00ffff, 0 0 16px #00ffff;
-        transform: translateY(-2px);
-        outline: none;
-      }
+  const handleClick = () => {
+    if (VALID_ROUTES.includes(href)) {
+      router.push(href);
+    } else {
+      console.error(`Attempted navigation to unknown route: ${href}`);
+    }
+  };
 
-      .futuristic-button:focus-visible {
-        outline: 2px solid #ffffff;
-        outline-offset: 4px;
-      }
-    `}</style>
-  </button>
-);
+  return (
+    <button
+      onClick={handleClick}
+      style={{
+        padding: '12px 24px',
+        borderRadius: '8px',
+        border: 'none',
+        background: 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)',
+        color: '#fff',
+        fontSize: '16px',
+        cursor: 'pointer',
+        boxShadow: '0 0 8px rgba(58,123,213,0.6)',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 16px rgba(58,123,213,0.9)';
+        (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.05)';
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 8px rgba(58,123,213,0.6)';
+        (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+      }}
+    >
+      {children}
+    </button>
+  );
+};
 
-export default Button;
+export default FuturisticButton;
